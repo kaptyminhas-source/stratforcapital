@@ -8,11 +8,17 @@ export async function onRequestPost({ request, env }) {
     const amount = (form.get("amount") || "").toString().trim();
     const description = (form.get("description") || "").toString().trim();
     const honeypot = (form.get("website_url") || "").toString().trim();
+    const serviceInterest = (form.get("service_interest") || "").toString().trim();
+    const utmSource = (form.get("utm_source") || "").toString().trim();
+    const utmMedium = (form.get("utm_medium") || "").toString().trim();
+    const utmCampaign = (form.get("utm_campaign") || "").toString().trim();
 
     if (honeypot) return Response.redirect(new URL("/thank-you", request.url), 303);
     if (!name || !email) {
       return new Response("Missing required fields", { status: 400 });
     }
+
+    const source = [utmSource, utmMedium, utmCampaign].filter(Boolean).join(" / ") || "Direct (no campaign tag)";
 
     const subject = `New lending inquiry — ${name}`;
     const html = `
@@ -25,6 +31,8 @@ export async function onRequestPost({ request, env }) {
       <p><strong>Description:</strong></p>
       <p>${escape(description).replace(/\n/g, "<br>")}</p>
       <hr>
+      <p><strong>Page:</strong> ${escape(serviceInterest || "General inquiry")}</p>
+      <p><strong>Campaign Source:</strong> ${escape(source)}</p>
       <p style="color:#888;font-size:12px">Submitted via stratforcapital.com contact form</p>
     `;
 
