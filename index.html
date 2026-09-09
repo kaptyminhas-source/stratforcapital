@@ -28,7 +28,8 @@
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--cream);color:var(--text);line-height:1.6}
 a{color:inherit}
 .nav{display:flex;justify-content:space-between;align-items:center;padding:18px 40px;position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
-.logo{color:var(--navy);font-weight:800;font-size:20px;letter-spacing:1px}
+.logo{color:var(--navy);font-weight:800;font-size:20px;letter-spacing:1px;display:flex;align-items:center;gap:9px}
+.logo img{width:34px;height:34px;border-radius:50%;object-fit:cover;display:block}
 .logo span{color:var(--gold-text)}
 .nav-links{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
 .nav-links a{color:var(--text);text-decoration:none;font-size:14px}
@@ -90,7 +91,7 @@ footer a{color:var(--gold);text-decoration:none}
 </head>
 <body>
 <nav class="nav">
-  <div class="logo">STRATFOR <span>CAPITAL</span></div>
+  <div class="logo"><img src="/images/logo.png" alt="Stratfor Capital">STRATFOR <span>CAPITAL</span></div>
   <div class="nav-links">
     <a href="#services">Services</a>
     <a href="#process">Process</a>
