@@ -8,12 +8,28 @@ export async function onRequestPost({ request, env }) {
     const amount = (form.get("amount") || "").toString().trim();
     const description = (form.get("description") || "").toString().trim();
     const honeypot = (form.get("website_url") || "").toString().trim();
+    const formTs = Number((form.get("form_ts") || "0").toString());
     const serviceInterest = (form.get("service_interest") || "").toString().trim();
     const utmSource = (form.get("utm_source") || "").toString().trim();
     const utmMedium = (form.get("utm_medium") || "").toString().trim();
     const utmCampaign = (form.get("utm_campaign") || "").toString().trim();
 
-    if (honeypot) return Response.redirect(new URL("/thank-you", request.url), 303);
+    const silentOk = () => Response.redirect(new URL("/thank-you", request.url), 303);
+
+    // Honeypot: hidden field, only bots fill it
+    if (honeypot) return silentOk();
+
+    // Time trap: real users take more than 3 seconds to fill the form
+    if (!formTs || Date.now() - formTs < 3000) return silentOk();
+
+    // Reserved fictional phone numbers (NXX-555-0100 through NXX-555-0199)
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length >= 7 && /^5550(0|1)\d{2}$/.test(phoneDigits.slice(-7))) return silentOk();
+
+    // Common spam / subscription-bot phrases and bare URLs
+    const spamPattern = /(confirm my subscription|unsubscribe|newsletter|seo servic|backlink|guest post|link building|crypto|bitcoin|forex|https?:\/\/|www\.)/i;
+    if (spamPattern.test(description) || spamPattern.test(name)) return silentOk();
+
     if (!name || !email) {
       return new Response("Missing required fields", { status: 400 });
     }
