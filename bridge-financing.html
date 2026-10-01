@@ -181,6 +181,8 @@ footer a{color:var(--gold);text-decoration:none}
     <a href="/bridge-financing-alberta-guide">Bridge Financing Guide &rarr;</a>
     <a href="/construction-loans">Construction Loans &rarr;</a>
     <a href="/commercial-mortgages">Commercial &amp; Investment &rarr;</a>
+    <a href="/private-lending-edmonton">Private Lending Edmonton &rarr;</a>
+    <a href="/private-lending-calgary">Private Lending Calgary &rarr;</a>
     <a href="/">All Lending Solutions &rarr;</a>
   </div>
 </section>
@@ -197,6 +199,7 @@ footer a{color:var(--gold);text-decoration:none}
     </div>
     <form action="/api/submit" method="POST">
       <input class="hp" type="text" name="website_url" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="form_ts" id="form_ts">
       <input type="hidden" name="utm_source" value="">
       <input type="hidden" name="utm_medium" value="">
       <input type="hidden" name="utm_campaign" value="">
@@ -236,6 +239,10 @@ footer a{color:var(--gold);text-decoration:none}
       if(input) input.value=v||sessionStorage.getItem(k)||'';
     }
   });
+  if(form){
+    var ts=form.querySelector('input[name="form_ts"]');
+    if(ts) ts.value=Date.now();
+  }
 })();
 </script>
 </body>
